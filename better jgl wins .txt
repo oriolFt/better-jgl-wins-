@@ -1,0 +1,44 @@
+apt install postfix postfix-doc postfix-pcre
+
+nano /etc/postfic/main.cf
+mydestination = oriol.lan
+mynetworks = 127.0.0.0/8 10.1.6.0/24
+
+apt install mailutils
+
+telnet 127.0.0.1 25
+
+helo oriol.lan
+MAIL FROM: user1@oriol.lan
+RCPT TO: user2@oriol.lan
+DATA
+SUBJECT: test
+Correu de prova
+.
+quit
+
+##verificacio
+
+mail
+
+apt install courier-imap
+
+nano /etc/postfix/main.cf
+home_mailbox = Maildir/
+mail_spool_directory = /home
+relayhost = 
+
+cd /etc/courier 
+
+pw2userdb > userdb
+
+chmod 700 userdb
+
+makeuserdb
+
+nano /etc/courier/imapd
+IMAP_MAILBOX_SANITY_CHECK=0
+
+nano authdaemonrc
+authmodulelist="authpam"
+
